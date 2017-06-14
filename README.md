@@ -108,8 +108,18 @@ Creates an array from a C array of VALUEs.
 int length = 2;
 VALUE ary_c[2] = {VALUE, VALUE};
 VALUE ary = rb_ary_new4(length, ary_c);
-// ...
+
+// or...
+
+int length = 2;
+VALUE ary = rb_ary_new4(length, (VALUE[2]){VALUE, VALUE});
+
+// or...
+
+int length = 2;
+VALUE ary = rb_ary_new_from_values(length, (VALUE[2]){VALUE, VALUE}); // alias for rb_ary_new4
 ```
+**Note:** there is no real performance impact between `rb_ary_new3` and `rb_ary_new4`.
 ## Array duplication
 ```c
 VALUE ary1 = rb_ary_new();
@@ -159,6 +169,19 @@ rb_ary_delete(VALUE ary, VALUE block);
 Deletes all elements from the array.
 ```c
 rb_ary_clear(VALUE ary);
+```
+## Important note about performances
+Retrieving elements in an array is a time-consuming process. It's more efficient to store an element in a VALUE and then to use it if we need it more than one time.
+```c
+// Less efficient
+VALUE ary = rb_ary_new();
+rb_ary_push(ary, INT2FIX(10));
+int val = FIXNUM_P(rb_ary_entry(ary, 0)) ? FIX2INT(rb_ary_entry(ary, 0)) : 0;
+
+// More efficient
+VALUE ary = rb_ary_new();
+VALUE tmp = rb_ary_push(ary, INT2FIX(10));
+int val = FIXNUM_P(tmp) ? FIX2INT(tmp) : 0;
 ```
 # Symbols
 ## Create symbol
