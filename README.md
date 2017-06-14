@@ -82,8 +82,8 @@ RBASIC_CLASS(VALUE) == rb_cKlass // other classes
 #define RB_CHECK_KLASS(o,k) (RBASIC_CLASS(o) == k)
 ```
 # Arrays
-# Create array
-## Empty array
+## Create array
+### Empty array
 Creates an empty array with size 0.
 ```c
 VALUE ary = rb_ary_new();
@@ -96,7 +96,7 @@ int length = 10;
 VALUE ary = rb_ary_new2(length);
 // ...
 ```
-## Array with default values
+### Array with default values
 Creates an array of defined VALUEs.
 ```c
 int length = 2;
@@ -120,17 +120,17 @@ int length = 2;
 VALUE ary = rb_ary_new_from_values(length, (VALUE[2]){VALUE, VALUE}); // alias for rb_ary_new4
 ```
 **Note:** there is no real performance impact between `rb_ary_new3` and `rb_ary_new4`.
-## Array duplication
+### Array duplication
 ```c
 VALUE ary1 = rb_ary_new();
 VALUE ary2 = rb_ary_dup(ary1);
 ```
-# Array manipulation
-## Get array length
+## Array manipulation
+### Get array length
 ```c
 RARRAY_LEN(VALUE) # returns length in C
 ```
-## Setting array values
+### Setting array values
 Stores a VALUE in an array at defined index. Note that negative indexes count from the end of the specified array.
 ```c
 rb_ary_store(VALUE ary, long index, VALUE element);
@@ -143,12 +143,12 @@ Prepends an element at the start of the array.
 ```c
 rb_ary_unshift(VALUE ary, VALUE element);
 ```
-## Getting array values
+### Getting array values
 Gets the element at defined index. Note that negative indexes count from the end of the specified array.
 ```c
 rb_ary_entry(VALUE ary, long index);
 ```
-## Deleting array values
+### Deleting array values
 Removes the last element of the array.
 ```c
 rb_ary_pop(VALUE ary);
