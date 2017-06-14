@@ -77,13 +77,88 @@ RTEST(VALUE); // true or false
 RB_TYPE_P(VALUE, T_TYPE); // other builtin types
 RBASIC_CLASS(VALUE) == rb_cKlass // other classes
 ```
+## Usefull macros
+```c
+#define RB_CHECK_KLASS(o,k) (RBASIC_CLASS(o) == k)
+```
 # Arrays
 # Create array
 ## Empty array
+Creates an empty array with size 0.
 ```c
 VALUE ary = rb_ary_new();
 rb_ary_push(ary, VALUE);
 // ...
+```
+Creates an empty array with a default size.
+```c
+int length = 10;
+VALUE ary = rb_ary_new2(length);
+// ...
+```
+## Array with default values
+Creates an array of defined VALUEs.
+```c
+int length = 2;
+VALUE ary = rb_ary_new3(length, VALUE el1, VALUE el2);
+// ...
+```
+Creates an array from a C array of VALUEs.
+```c
+int length = 2;
+VALUE ary_c[2] = {VALUE, VALUE};
+VALUE ary = rb_ary_new4(length, ary_c);
+// ...
+```
+## Array duplication
+```c
+VALUE ary1 = rb_ary_new();
+VALUE ary2 = rb_ary_dup(ary1);
+```
+# Array manipulation
+## Get array length
+```c
+RARRAY_LEN(VALUE) # returns length in C
+```
+## Setting array values
+Stores a VALUE in an array at defined index. Note that negative indexes count from the end of the specified array.
+```c
+rb_ary_store(VALUE ary, long index, VALUE element);
+```
+Appends an element at the end of the array.
+```c
+rb_ary_push(VALUE ary, VALUE element);
+```
+Prepends an element at the start of the array.
+```c
+rb_ary_unshift(VALUE ary, VALUE element);
+```
+## Getting array values
+Gets the element at defined index. Note that negative indexes count from the end of the specified array.
+```c
+rb_ary_entry(VALUE ary, long index);
+```
+## Deleting array values
+Removes the last element of the array.
+```c
+rb_ary_pop(VALUE ary);
+```
+Removes the first element of the array.
+```c
+rb_ary_shift(VALUE ary);
+```
+Removes the element of the array at defined index. If index is out of bounds, returns `Qnil`. Otherwise, returns the deleted element. Note that negative indexes count from the end of the specified array.
+```c
+rb_ary_delete_at(VALUE ary, long index);
+```
+Removes all the elements in the array that are equal to specified item. Returns `Qnil` if no matches are found. Note that the item can be a block.
+```c
+rb_ary_delete(VALUE ary, VALUE item_to_delete);
+rb_ary_delete(VALUE ary, VALUE block);
+```
+Deletes all elements from the array.
+```c
+rb_ary_clear(VALUE ary);
 ```
 # Symbols
 ## Create symbol
